@@ -15,10 +15,18 @@ import java.util.Collection;
 public class NumberRangeSummarizerTest {
 
     @Test
-    public void collectTest() {
-        NumberRangeSummarizer<Integer> nrs = new NumberRangeSummarizerImpl<>();
-        Collection<Integer> expected = Arrays.asList(1,3,6,7,8,12,13,14,15,21,22,23,24,31);
-        Collection<Integer> actual = nrs.collect("1,3,6,7,8,12,13,14,15,21,22,23,24,31");
+    public void collectLongTest() {
+        NumberRangeSummarizer<Long> nrs = new NumberRangeSummarizerImpl<>();
+        Collection<Long> expected = Arrays.asList(1L,3L,6L,7L,8L,12L,13L,14L,15L,21L,22L,23L,24L,31L);
+        Collection<Long> actual = nrs.collect("1,3,6,7,8,12,13,14,15,21,22,23,24,31");
+        Assert.assertEquals(expected,actual);
+    }
+
+    @Test
+    public void collectFloatTest() {
+        NumberRangeSummarizer<Double> nrs = new NumberRangeSummarizerImpl<>();
+        Collection<Double> expected = Arrays.asList(1.5D,3.5D,6.5D,7.5D,8.5D,12.5D,13.5D,14.5D,15.5D,21.5D,22.5D,23.5D,24.5D,31.5D);
+        Collection<Double> actual = nrs.collect("1.5,3.5,6.5,7.5,8.5,12.5,13.5,14.5,15.5,21.5,22.5,23.5,24.5,31.5");
         Assert.assertEquals(expected,actual);
     }
 
@@ -33,8 +41,8 @@ public class NumberRangeSummarizerTest {
 
     @Test
     public void longRangeSummarizerTest() {
-        NumberRangeSummarizer<Long> nrs = new NumberRangeSummarizerImpl<>();
-        Collection<Long> input = Arrays.asList(1L,3L,2L,5L,7L,10L,8L);
+        NumberRangeSummarizer<Integer> nrs = new NumberRangeSummarizerImpl<>();
+        Collection<Integer> input = Arrays.asList(1,3,2,5,7,10,8);
         String expected = "1, 2-3, 5, 7-8, 10";
         String actual = nrs.summarizeCollection(input);
         Assert.assertEquals(expected, actual);
