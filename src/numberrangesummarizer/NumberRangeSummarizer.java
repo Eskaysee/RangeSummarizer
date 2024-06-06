@@ -1,5 +1,6 @@
 package numberrangesummarizer;
 
+import java.text.ParseException;
 import java.util.Collection;
 
 /**
@@ -19,10 +20,10 @@ import java.util.Collection;
  *   - best practices
  *   - unit tests
  */
-public interface NumberRangeSummarizer<T extends Number> {
+public interface NumberRangeSummarizer<T extends Number & Comparable<T>> {
 
     //collect the input
-    Collection<T> collect(String input);
+    Collection<T> collect(String input) throws ParseException;
 
     //get the summarized string
     String summarizeCollection(Collection<T> input);
