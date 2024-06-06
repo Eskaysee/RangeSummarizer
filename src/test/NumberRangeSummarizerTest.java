@@ -5,7 +5,6 @@ import numberrangesummarizer.NumberRangeSummarizerImpl;
 import org.junit.Test;
 import org.junit.Assert;
 
-import java.math.BigInteger;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Collection;
