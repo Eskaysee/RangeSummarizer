@@ -20,7 +20,7 @@ import java.util.Collection;
  *   - best practices
  *   - unit tests
  */
-public interface NumberRangeSummarizer<T extends Number> {
+public interface NumberRangeSummarizer<T extends Number & Comparable<T>> {
 
     //collect the input
     Collection<T> collect(String input) throws ParseException;

@@ -5,9 +5,11 @@ import numberrangesummarizer.NumberRangeSummarizerImpl;
 import org.junit.Test;
 import org.junit.Assert;
 
+import java.math.BigInteger;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.InputMismatchException;
 
 /**
  * Tests the NumberRangeSummarizer
@@ -51,27 +53,34 @@ public class NumberRangeSummarizerTest {
     @Test
     public void summarizeCollectionTest() {
         NumberRangeSummarizer<Integer> nrs = new NumberRangeSummarizerImpl<>();
-        Collection<Integer> input = Arrays.asList(1,3,6,7,8,12,13,14,15,21,22,23,24,31);
-        String expected = "1, 3, 6-8, 12-15, 21-24, 31";
+        Collection<Integer> input = Arrays.asList(1,3,6,7,8,12,13,14,15,21,22,23,30,31,32);
+        String expected = "1, 3, 6-8, 12-15, 21-23, 30-32";
         String actual = nrs.summarizeCollection(input);
         Assert.assertEquals(expected, actual);
     }
 
     @Test
-    public void intRangeSummarizerTest() throws ParseException {
+    public void unorderedIntegerRangeSummarizerTest() throws ParseException {
         NumberRangeSummarizer<Integer> nrs = new NumberRangeSummarizerImpl<>();
-        Collection<Integer> input = Arrays.asList();
         String expected = "1-3, 5, 7-8, 10";
         String actual = nrs.summarizeCollection(nrs.collect("1,3,2,5,7,10,8"));
         Assert.assertEquals(expected, actual);
     }
 
     @Test
-    public void floatRangeSummarizerTest() throws ParseException {
+    public void unorderedfloatRangeSummarizerTest() throws ParseException {
         NumberRangeSummarizer<Float> nrs = new NumberRangeSummarizerImpl<>();
-        Collection<Float> input = Arrays.asList();
-        String expected = "1.1, 2.2-2.3, 5, 7.6-7.8, 10";
-        String actual = nrs.summarizeCollection(nrs.collect("1.1, 2.2, 2.3, 5, 7.6, 7.7, 7.8, 10"));
+        String expected = "1.1, 2.2-2.3, 5.5, 7.6-7.8, 9.9";
+        String actual = nrs.summarizeCollection(nrs.collect("1.1, 2.2, 7.7, 5.5, 7.6, 2.3, 7.8, 9.9"));
         Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void differentTypesOrPrecisionTest() {
+        InputMismatchException ime = Assert.assertThrows(
+                InputMismatchException.class,
+                () -> new NumberRangeSummarizerImpl().collect("1, 3, 2.5, 5, 7.6, 10, 8")
+        );
+        Assert.assertEquals("Sequence should contain numbers of the same type and precision", ime.getMessage());
     }
 }
