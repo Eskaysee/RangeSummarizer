@@ -16,6 +16,15 @@ import java.util.Collection;
 public class NumberRangeSummarizerTest {
 
     @Test
+    public void invalidSequenceTest() {
+        ParseException pe = Assert.assertThrows(
+                ParseException.class,
+                () -> new NumberRangeSummarizerImpl().collect("1, 3, 2, 5, 7, 10, 8, a")
+        );
+        Assert.assertEquals("String should only contain numbers", pe.getMessage());
+    }
+
+    @Test
     public void collectLongTest() throws ParseException {
         NumberRangeSummarizer<Long> nrs = new NumberRangeSummarizerImpl<>();
         Collection<Long> expected = Arrays.asList(1L,3L,6L,7L,8L,12L,13L,14L,15L,21L,22L,23L,24L,31L);
@@ -32,6 +41,14 @@ public class NumberRangeSummarizerTest {
     }
 
     @Test
+    public void summarizeEmptyCollectionTest() {
+        NumberRangeSummarizer<Integer> nrs = new NumberRangeSummarizerImpl<>();
+        String expected = "Input should not be empty or null!";
+        String actual = nrs.summarizeCollection(null);
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
     public void summarizeCollectionTest() {
         NumberRangeSummarizer<Integer> nrs = new NumberRangeSummarizerImpl<>();
         Collection<Integer> input = Arrays.asList(1,3,6,7,8,12,13,14,15,21,22,23,24,31);
@@ -41,7 +58,7 @@ public class NumberRangeSummarizerTest {
     }
 
     @Test
-    public void longRangeSummarizerTest() throws ParseException {
+    public void intRangeSummarizerTest() throws ParseException {
         NumberRangeSummarizer<Integer> nrs = new NumberRangeSummarizerImpl<>();
         Collection<Integer> input = Arrays.asList();
         String expected = "1-3, 5, 7-8, 10";
@@ -50,19 +67,11 @@ public class NumberRangeSummarizerTest {
     }
 
     @Test
-    public void invalidSequenceTest() {
-        ParseException pe = Assert.assertThrows(
-                ParseException.class,
-                () -> new NumberRangeSummarizerImpl().collect("1, 3, 2, 5, 7, 10, 8, a")
-        );
-        Assert.assertEquals("String should only contain numbers", pe.getMessage());
-    }
-
-    @Test
-    public void summarizeEmptyCollectionTest() {
-        NumberRangeSummarizer<Integer> nrs = new NumberRangeSummarizerImpl<>();
-        String expected = "Input should not be empty or null!";
-        String actual = nrs.summarizeCollection(null);
+    public void floatRangeSummarizerTest() throws ParseException {
+        NumberRangeSummarizer<Float> nrs = new NumberRangeSummarizerImpl<>();
+        Collection<Float> input = Arrays.asList();
+        String expected = "1.1, 2.2-2.3, 5, 7.6-7.8, 10";
+        String actual = nrs.summarizeCollection(nrs.collect("1.1, 2.2, 2.3, 5, 7.6, 7.7, 7.8, 10"));
         Assert.assertEquals(expected, actual);
     }
 }
